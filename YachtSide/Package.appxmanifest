@@ -8,7 +8,7 @@
 
   <Identity
     Name="6a709db1-0859-4fa6-9ae2-a1353682a8e9"
-    Publisher="CN=jason"
+    Publisher="CN=Majule Games"
     Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="6a709db1-0859-4fa6-9ae2-a1353682a8e9" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
@@ -42,8 +42,4 @@
       </uap:VisualElements>
     </Application>
   </Applications>
-
-  <Capabilities>
-    <Capability Name="internetClient" />
-  </Capabilities>
 </Package>
