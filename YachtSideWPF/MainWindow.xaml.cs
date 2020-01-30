@@ -20,22 +20,47 @@ namespace YachtSideWPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        UserControl _currentUC;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            MainUserControlPanel.Content = new SetupGame();
+            _currentUC = new SetupGame(this);
+            MainUserControlPanel.Content = _currentUC;
+        }
+
+        public UserControl CurrentControl
+        { 
+            get { return _currentUC; }
+            set
+            {
+                _currentUC = value;
+                MainUserControlPanel.Content = _currentUC;
+            }
         }
 
         private void NewGameMenuItem_Click(object sender, RoutedEventArgs e)
         {
-
+            CurrentControl = new SetupGame(this);
         }
 
         private void ScoresMenuItem_Click(object sender, RoutedEventArgs e)
         {
+            UserControl lastControl = CurrentControl;
+            CurrentControl = new ScoresUserControl(this, lastControl);
+        }
 
+        private void RulesMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MainUserControlPanel.Visibility = Visibility.Collapsed;
+            RulesPopup.Visibility = Visibility.Visible;
+        }
+
+        private void CloseRulesButton_Click(object sender, RoutedEventArgs e)
+        {
+            RulesPopup.Visibility = Visibility.Hidden;
+            MainUserControlPanel.Visibility = Visibility.Visible;
         }
     }
 }

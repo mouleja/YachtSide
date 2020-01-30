@@ -9,16 +9,49 @@
              d:DesignHeight="500" d:DesignWidth="700">
     <StackPanel Orientation="Vertical">
         <TextBlock Text="Welcome to YachtSide!!!" HorizontalAlignment="Center" 
-                   FontSize="18" FontStyle="Italic" Margin="0, 10, 0, 10"/>
-        <StackPanel Orientation="Horizontal">
-            <TextBlock Text="Select Player:"/>
-            <ComboBox Name="PlayerComboBox" MinWidth="100" MaxHeight="30" Margin="5 0" 
-                       SelectionChanged="PlayerListView_SelectionChanged"/>
-            <TextBlock Text="Or Add New Player - Name: "/>
-            <TextBox x:Name="NewPlayerTextBox" MinWidth="100" />
-            <Button x:Name="AddNewPlayerButton" Content="Add" Click="AddNewPlayerButton_Click" />
+                   FontSize="24" FontStyle="Italic" Margin="0, 10, 0, 10"/>
+        <TextBlock Margin="0, 5" 
+            Text="YachtSide is a dice game for 1 to 4 players.  Click 'Rules' for list of rules and scoring." />
+        <TextBlock Margin="0, 5" 
+            Text="If you like, select 'yachtBot' as a player, she plays without any help from lowly humans!" />
+        <StackPanel Orientation="Horizontal" Margin="0 5">
+            <TextBlock Text="How many players? " VerticalAlignment="Center"/>
+            <ComboBox Name="NumberOfPlayersCB" Width="40" SelectionChanged="NumberOfPlayersCB_SelectionChanged">
+                <ComboBoxItem Content="1" IsSelected="True"/>
+                <ComboBoxItem Content="2"/>
+                <ComboBoxItem Content="3"/>
+                <ComboBoxItem Content="4"/>
+            </ComboBox>
         </StackPanel>
-
+        <StackPanel Orientation="Horizontal" Margin="0 5">
+            <TextBlock Text="Add New Player -> Name:" />
+            <TextBox x:Name="NewPlayerTextBox" MinWidth="100" Margin="5 0"/>
+            <Button x:Name="AddNewPlayerButton" Content="Add" Click="AddNewPlayerButton_Click" Margin="5 0" />
+            <TextBlock x:Name="AddPlayerError" Text="Sorry, that name is taken!" Foreground="Red"
+                       Margin="5 0" FontStyle="Italic" VerticalAlignment="Center" Visibility="Hidden"/>
+        </StackPanel>
+        <StackPanel x:Name="SelectPlayer1" Orientation="Horizontal" Margin="0 5">
+            <TextBlock Text="Select Player 1:"/>
+            <ComboBox Name="Player1CB" MinWidth="100" MaxHeight="30" Margin="5 0" 
+                       SelectionChanged="PlayerCB_SelectionChanged"/>
+        </StackPanel>
+        <StackPanel x:Name="SelectPlayer2" Orientation="Horizontal" Margin="0 5" Visibility="Collapsed">
+            <TextBlock Text="Select Player 2:"/>
+            <ComboBox Name="Player2CB" MinWidth="100" MaxHeight="30" Margin="5 0" 
+                       SelectionChanged="PlayerCB_SelectionChanged"/>
+        </StackPanel>
+        <StackPanel x:Name="SelectPlayer3" Orientation="Horizontal" Margin="0 5" Visibility="Collapsed" >
+            <TextBlock Text="Select Player 3:"/>
+            <ComboBox Name="Player3CB" MinWidth="100" MaxHeight="30" Margin="5 0" 
+                       SelectionChanged="PlayerCB_SelectionChanged"/>
+        </StackPanel>
+        <StackPanel x:Name="SelectPlayer4" Orientation="Horizontal" Margin="0 5" Visibility="Collapsed" >
+            <TextBlock Text="Select Player 4:"/>
+            <ComboBox Name="Player4CB" MinWidth="100" MaxHeight="30" Margin="5 0" 
+                       SelectionChanged="PlayerCB_SelectionChanged"/>
+        </StackPanel>
+        <Button x:Name="StartGameButton" Content="Start Game!" Width="200" FontSize="18"
+                FontWeight="Black" IsEnabled="False" Click="StartGameButton_Click"/>
 
     </StackPanel>
 </UserControl>

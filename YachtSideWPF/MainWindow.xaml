@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YachtSideWPF"
         mc:Ignorable="d"
-        Title="YachtSide" Height="650" Width="900">
+        Title="YachtSide" Height="660" Width="900">
 
     <Window.Resources>
 
@@ -18,6 +18,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
     
@@ -25,11 +26,22 @@
         <Menu>
             <MenuItem Name="NewGameMenuItem" Header="_New Game" Click="NewGameMenuItem_Click" />
             <MenuItem Name="ScoresMenuItem" Header="_Scores" Click="ScoresMenuItem_Click" />
+            <MenuItem Name="RulesMenuItem" Header="_Rules" Click="RulesMenuItem_Click" />
         </Menu>
         
         <TextBlock Text="YachtSide" Grid.Row="1" HorizontalAlignment="Center" FontFamily="Arial" FontSize="48"/>
         <UserControl Grid.Row="2" Name="MainUserControlPanel" Margin="10"/>
-        <Rectangle Grid.Row="3" StrokeThickness="10" >
+        
+        <!-- Rules PopUp -->
+        <StackPanel x:Name="RulesPopup" Orientation="Vertical" Grid.Row="2" Visibility="Hidden">
+            <TextBlock FontSize="24" HorizontalAlignment="Center" FontWeight="Bold"
+                Text="Rules" />
+            <Button x:Name="CloseRulesButton" Content="Close" Width="200" Margin="10"
+                    Click="CloseRulesButton_Click" />
+        </StackPanel>
+        
+        <!-- Footer -->
+        <Rectangle Grid.Row="4" StrokeThickness="10" >
             <Rectangle.Stroke>
                 <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5" MappingMode="RelativeToBoundingBox" SpreadMethod="Pad">
                     <GradientStop Color="DarkRed" Offset="0"/>
@@ -38,7 +50,7 @@
                 </LinearGradientBrush>
             </Rectangle.Stroke>
         </Rectangle>
-        <TextBlock Grid.Row="3" Text="Ad goes here?" HorizontalAlignment="Center" FontFamily="Arial" 
+        <TextBlock Grid.Row="4" Text="Ad goes here?" HorizontalAlignment="Center" FontFamily="Arial" 
                    FontSize="48" Padding="10"/>
 
     </Grid>
