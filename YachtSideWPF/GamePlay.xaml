@@ -6,22 +6,26 @@
              xmlns:local="clr-namespace:YachtSideWPF"
              mc:Ignorable="d" 
              Background="White"
-             d:DesignHeight="500" d:DesignWidth="700">
+             d:DesignHeight="500" d:DesignWidth="880">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="1" Grid.Column="1" Margin="10">
+        <!-- Dice -->
+        <Grid Grid.Row="1" Grid.Column="1" Margin="10 0">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -30,35 +34,49 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <TextBlock Text="Dice:" Grid.Row="0" FontWeight="Black" FontSize="24" />
-            <StackPanel Grid.Row="1" Orientation="Horizontal" >
+            <StackPanel Orientation="Horizontal" Grid.Row="0" >
+                <TextBlock Text="Now Rolling: " FontSize="16" FontWeight="Light"/>
+                <TextBlock Text="{Binding CurrentPlayer}" FontSize="16" FontWeight="Light" FontStyle="Italic"/>
+            </StackPanel>
+            <TextBlock Text="Dice:" Grid.Row="1" FontWeight="Black" FontSize="24" />
+            <StackPanel Grid.Row="2" Orientation="Horizontal" >
                 <TextBox Name="die1" Margin="5" Text="X" FontSize="36" VerticalAlignment="Center" IsReadOnly="True" IsTabStop="False"/>
                 <TextBox Name="die2" Margin="5" Text="X" FontSize="36" VerticalAlignment="Center" IsReadOnly="True" IsTabStop="False"/>
                 <TextBox Name="die3" Margin="5" Text="X" FontSize="36" VerticalAlignment="Center" IsReadOnly="True" IsTabStop="False"/>
                 <TextBox Name="die4" Margin="5" Text="X" FontSize="36" VerticalAlignment="Center" IsReadOnly="True" IsTabStop="False"/>
                 <TextBox Name="die5" Margin="5" Text="X" FontSize="36" VerticalAlignment="Center" IsReadOnly="True" IsTabStop="False" />
             </StackPanel>
-            <TextBlock Grid.Row="2" Text="Keep ?" FontSize="18"/>
-            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,0" >
+            <TextBlock Grid.Row="3" Text="Keep ?" FontSize="18"/>
+            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,0" >
                 <CheckBox Name="keep1" Margin="10" Width="18" IsEnabled="False"/>
                 <CheckBox Name="keep2" Margin="10" Width="18" IsEnabled="False"/>
                 <CheckBox Name="keep3" Margin="10" Width="18" IsEnabled="False"/>
                 <CheckBox Name="keep4" Margin="10" Width="18" IsEnabled="False"/>
                 <CheckBox Name="keep5" Margin="10" Width="18" IsEnabled="False"/>
             </StackPanel>
-            <Button Name="RollButton" Grid.Row="4" Content="Roll #1" Margin="5" Height="50" FontSize="30" 
+            <Button Name="RollButton" Grid.Row="5" Content="Roll #1" Margin="5" Height="50" FontSize="30" 
                     HorizontalAlignment="Center" Click="RollButton_Click" IsTabStop="True"/>
-            <TextBlock x:Name="TurnCounter" Grid.Row="5" Text="Turn # 1"/>
-            <TextBlock Name="GameOverTextBlock" Grid.Row="6" Text="Game Over!" FontSize="30" HorizontalAlignment="Center" 
+            <TextBlock x:Name="TurnCounter" Grid.Row="6" Text="Turn # 1"/>
+            <TextBlock Name="GameOverTextBlock" Grid.Row="7" Text="Game Over!" FontSize="30" HorizontalAlignment="Center" 
                        FontStyle="Italic" 
                        Margin="5" Visibility="Visible" Foreground="Red"/>
-            <Button x:Name="PlayAgainButton" Grid.Row="7" HorizontalAlignment="Center" Margin="5" Content="Play Again" 
+            <Button x:Name="PlayAgainButton" Grid.Row="8" HorizontalAlignment="Center" Margin="5" Content="Play Again" 
                     Visibility="Visible" FontSize="24" Click="PlayAgainButton_Click"/>
+            <StackPanel Grid.Row="9" Name="WinnerPanel">
+                <TextBlock  Text="And the winner is ..." HorizontalAlignment="Center"
+                           Margin="5" FontSize="14" FontWeight="Medium"/>
+                <TextBlock x:Name="WinnerName" Text="Jason" HorizontalAlignment="Center"
+                           FontSize="24" FontWeight="Black" FontStyle="Italic" Margin="5" />
+            </StackPanel>
         </Grid>
 
-        <Grid Grid.Row="1" Grid.Column="2" Margin="10">
+        <!-- Player 1 -->
+        <Grid x:Name="P1Grid" Grid.Row="1" Grid.Column="2" Margin="10 0" IsEnabled="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -87,38 +105,38 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="Player 1" FontSize="24" />
+            <TextBlock x:Name="P1Name" Grid.Row="0" Grid.Column="0" Text="Player 1" FontSize="24" />
             <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="Upper Section" FontSize="18" FontWeight="Black"/>
-            <Button Grid.Row="2" Grid.Column="0" Content="Ones" Name="OnesButton" Click="SelectionButton_Click"/>
+            <Button Grid.Row="2" Grid.Column="0" Content="Ones" Name="P1OnesButton" Click="SelectionButton_Click"/>
             <TextBox Grid.Row="2" Grid.Column="1" x:Name="P1Ones" Text="0" IsReadOnly="True" IsTabStop="False"  />
-            <Button Grid.Row="3" Grid.Column="0" Content="Twos" Name="TwosButton" Click="SelectionButton_Click" />
+            <Button Grid.Row="3" Grid.Column="0" Content="Twos" Name="P1TwosButton" Click="SelectionButton_Click" />
             <TextBox  Grid.Row="3" Grid.Column="1" x:Name="P1Twos" Text="0" IsReadOnly="True" IsTabStop="False" />
-            <Button Grid.Row="4" Grid.Column="0" Content="Threes" Name="ThreesButton" Click="SelectionButton_Click" />
+            <Button Grid.Row="4" Grid.Column="0" Content="Threes" Name="P1ThreesButton" Click="SelectionButton_Click" />
             <TextBox  Grid.Row="4" Grid.Column="1" x:Name="P1Threes" Text="0" IsReadOnly="True"  IsTabStop="False" />
-            <Button Grid.Row="5" Grid.Column="0" Content="Fours" Name="FoursButton" Click="SelectionButton_Click" />
+            <Button Grid.Row="5" Grid.Column="0" Content="Fours" Name="P1FoursButton" Click="SelectionButton_Click" />
             <TextBox  Grid.Row="5" Grid.Column="1" x:Name="P1Fours" Text="0" IsReadOnly="True"  IsTabStop="False" />
-            <Button Grid.Row="6" Grid.Column="0" Content="Fives" Name="FivesButton" Click="SelectionButton_Click" />
+            <Button Grid.Row="6" Grid.Column="0" Content="Fives" Name="P1FivesButton" Click="SelectionButton_Click" />
             <TextBox  Grid.Row="6" Grid.Column="1" x:Name="P1Fives" Text="0" IsReadOnly="True"  IsTabStop="False" />
-            <Button Grid.Row="7" Grid.Column="0" Content="Sixes" Name="SixButton" Click="SelectionButton_Click" />
+            <Button Grid.Row="7" Grid.Column="0" Content="Sixes" Name="P1SixButton" Click="SelectionButton_Click" />
             <TextBox  Grid.Row="7" Grid.Column="1" x:Name="P1Sixes" Text="0" IsReadOnly="True"  IsTabStop="False" />
             <TextBlock Grid.Row="9" Grid.Column="0" Text="Upper Total" />
             <TextBox Grid.Row="9" Grid.Column="1" Name="p1upperTotal" Text="0" IsReadOnly="True" IsTabStop="False" />
             <TextBlock Grid.Row="8" Grid.Column="0" Text="Upper Bonus"/>
             <TextBox Grid.Row="8" Grid.Column="1" Name="p1upperBonus" Text="0" IsReadOnly="True" IsTabStop="False" />
             <TextBlock Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Text="Lower Section" FontSize="18" FontWeight="Black"/>
-            <Button Grid.Row="11" Grid.Column="0" Content="Three of a Kind" Name="ToakButton" Click="SelectionButton_Click" />
+            <Button Grid.Row="11" Grid.Column="0" Content="Three of a Kind" Name="P1ToakButton" Click="SelectionButton_Click" />
             <TextBox Grid.Row="11" Grid.Column="1" Name="p1toak"  IsReadOnly="True" Text="0"  IsTabStop="False" />
-            <Button Grid.Row="12" Grid.Column="0" Content="Four of a Kind" Name="FoakButton" Click="SelectionButton_Click"/>
+            <Button Grid.Row="12" Grid.Column="0" Content="Four of a Kind" Name="P1FoakButton" Click="SelectionButton_Click"/>
             <TextBox Grid.Row="12" Grid.Column="1" Name="p1foak"  IsReadOnly="True" Text="0" IsTabStop="False" />
-            <Button Grid.Row="13" Grid.Column="0" Content="Full House" Name="FhButton" Click="SelectionButton_Click" />
+            <Button Grid.Row="13" Grid.Column="0" Content="Full House" Name="P1FhButton" Click="SelectionButton_Click" />
             <TextBox Grid.Row="13" Grid.Column="1" Name="p1fh"  IsReadOnly="True" Text="0" IsTabStop="False" />
-            <Button Grid.Row="14" Grid.Column="0" Content="Small Straight" Name="SsButton" Click="SelectionButton_Click" />
+            <Button Grid.Row="14" Grid.Column="0" Content="Small Straight" Name="P1SsButton" Click="SelectionButton_Click" />
             <TextBox Grid.Row="14" Grid.Column="1" Name="p1ss"  IsReadOnly="True" Text="0" IsTabStop="False" />
-            <Button Grid.Row="15" Grid.Column="0" Content="Large Straight" Name="LsButton" Click="SelectionButton_Click" />
+            <Button Grid.Row="15" Grid.Column="0" Content="Large Straight" Name="P1LsButton" Click="SelectionButton_Click" />
             <TextBox Grid.Row="15" Grid.Column="1" Name="p1ls"  IsReadOnly="True" Text="0" IsTabStop="False" />
-            <Button Grid.Row="16" Grid.Column="0" Content="Chance" Name="ChanceButton" Click="SelectionButton_Click" />
+            <Button Grid.Row="16" Grid.Column="0" Content="Chance" Name="P1ChanceButton" Click="SelectionButton_Click" />
             <TextBox Grid.Row="16" Grid.Column="1" Name="p1chance" Text="0" IsReadOnly="True" IsTabStop="False"  />
-            <Button Grid.Row="17" Grid.Column="0" Content="YachtSide" Name="YatButton" Click="SelectionButton_Click" />
+            <Button Grid.Row="17" Grid.Column="0" Content="YachtSide" Name="P1YatButton" Click="SelectionButton_Click" />
             <TextBox Grid.Row="17" Grid.Column="1" Name="p1yat"  IsReadOnly="True" Text="0" IsTabStop="False" />
             <TextBlock Grid.Row="18" Grid.Column="0" Text="YachtSide Bonus" />
             <TextBox Grid.Row="18" Grid.Column="1" Name="p1yb"  IsReadOnly="True" Text="0" IsTabStop="False" />
@@ -127,5 +145,219 @@
             <TextBlock Grid.Row="20" Grid.Column="0" Text="Total" FontWeight="Black" FontSize="18"/>
             <TextBox Grid.Row="20" Grid.Column="1" Name="p1total" IsReadOnly="True" Text="0" IsTabStop="False" />
         </Grid>
+
+        <!-- Player 2 -->
+        <Grid x:Name="P2Grid" Grid.Row="1" Grid.Column="3" Margin="10 0" IsEnabled="False" Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock x:Name="P2Name" Grid.Row="0" Grid.Column="0" Text="Player 2" FontSize="24" />
+            <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="Upper Section" FontSize="18" FontWeight="Black"/>
+            <Button Grid.Row="2" Grid.Column="0" Content="Ones" Name="P2OnesButton" Click="SelectionButton_Click"/>
+            <TextBox Grid.Row="2" Grid.Column="1" x:Name="P2Ones" Text="0" IsReadOnly="True" IsTabStop="False"  />
+            <Button Grid.Row="3" Grid.Column="0" Content="Twos" Name="P2TwosButton" Click="SelectionButton_Click" />
+            <TextBox  Grid.Row="3" Grid.Column="1" x:Name="P2Twos" Text="0" IsReadOnly="True" IsTabStop="False" />
+            <Button Grid.Row="4" Grid.Column="0" Content="Threes" Name="P2ThreesButton" Click="SelectionButton_Click" />
+            <TextBox  Grid.Row="4" Grid.Column="1" x:Name="P2Threes" Text="0" IsReadOnly="True"  IsTabStop="False" />
+            <Button Grid.Row="5" Grid.Column="0" Content="Fours" Name="P2FoursButton" Click="SelectionButton_Click" />
+            <TextBox  Grid.Row="5" Grid.Column="1" x:Name="P2Fours" Text="0" IsReadOnly="True"  IsTabStop="False" />
+            <Button Grid.Row="6" Grid.Column="0" Content="Fives" Name="P2FivesButton" Click="SelectionButton_Click" />
+            <TextBox  Grid.Row="6" Grid.Column="1" x:Name="P2Fives" Text="0" IsReadOnly="True"  IsTabStop="False" />
+            <Button Grid.Row="7" Grid.Column="0" Content="Sixes" Name="P2SixButton" Click="SelectionButton_Click" />
+            <TextBox  Grid.Row="7" Grid.Column="1" x:Name="P2Sixes" Text="0" IsReadOnly="True"  IsTabStop="False" />
+            <TextBlock Grid.Row="9" Grid.Column="0" Text="Upper Total" />
+            <TextBox Grid.Row="9" Grid.Column="1" Name="p2upperTotal" Text="0" IsReadOnly="True" IsTabStop="False" />
+            <TextBlock Grid.Row="8" Grid.Column="0" Text="Upper Bonus"/>
+            <TextBox Grid.Row="8" Grid.Column="1" Name="p2upperBonus" Text="0" IsReadOnly="True" IsTabStop="False" />
+            <TextBlock Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Text="Lower Section" FontSize="18" FontWeight="Black"/>
+            <Button Grid.Row="11" Grid.Column="0" Content="Three of a Kind" Name="P2ToakButton" Click="SelectionButton_Click" />
+            <TextBox Grid.Row="11" Grid.Column="1" Name="p2toak"  IsReadOnly="True" Text="0"  IsTabStop="False" />
+            <Button Grid.Row="12" Grid.Column="0" Content="Four of a Kind" Name="P2FoakButton" Click="SelectionButton_Click"/>
+            <TextBox Grid.Row="12" Grid.Column="1" Name="p2foak"  IsReadOnly="True" Text="0" IsTabStop="False" />
+            <Button Grid.Row="13" Grid.Column="0" Content="Full House" Name="P2FhButton" Click="SelectionButton_Click" />
+            <TextBox Grid.Row="13" Grid.Column="1" Name="p2fh"  IsReadOnly="True" Text="0" IsTabStop="False" />
+            <Button Grid.Row="14" Grid.Column="0" Content="Small Straight" Name="P2SsButton" Click="SelectionButton_Click" />
+            <TextBox Grid.Row="14" Grid.Column="1" Name="p2ss"  IsReadOnly="True" Text="0" IsTabStop="False" />
+            <Button Grid.Row="15" Grid.Column="0" Content="Large Straight" Name="P2LsButton" Click="SelectionButton_Click" />
+            <TextBox Grid.Row="15" Grid.Column="1" Name="p2ls"  IsReadOnly="True" Text="0" IsTabStop="False" />
+            <Button Grid.Row="16" Grid.Column="0" Content="Chance" Name="P2ChanceButton" Click="SelectionButton_Click" />
+            <TextBox Grid.Row="16" Grid.Column="1" Name="p2chance" Text="0" IsReadOnly="True" IsTabStop="False"  />
+            <Button Grid.Row="17" Grid.Column="0" Content="YachtSide" Name="P2YatButton" Click="SelectionButton_Click" />
+            <TextBox Grid.Row="17" Grid.Column="1" Name="p2yat"  IsReadOnly="True" Text="0" IsTabStop="False" />
+            <TextBlock Grid.Row="18" Grid.Column="0" Text="YachtSide Bonus" />
+            <TextBox Grid.Row="18" Grid.Column="1" Name="p2yb"  IsReadOnly="True" Text="0" IsTabStop="False" />
+            <TextBlock Grid.Row="19" Grid.Column="0" Text="Lower Total" />
+            <TextBox Grid.Row="19" Grid.Column="1" Name="p2lowerTotal" Text="0"  IsTabStop="False" />
+            <TextBlock Grid.Row="20" Grid.Column="0" Text="Total" FontWeight="Black" FontSize="18"/>
+            <TextBox Grid.Row="20" Grid.Column="1" Name="p2total" IsReadOnly="True" Text="0" IsTabStop="False" />
+        </Grid>
+
+        <!-- Player 3 -->
+        <Grid x:Name="P3Grid" Grid.Row="1" Grid.Column="4" Margin="10 0" IsEnabled="False" Visibility="Collapsed" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock x:Name="P3Name" Grid.Row="0" Grid.Column="0" Text="Player 3" FontSize="24" />
+            <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="Upper Section" FontSize="18" FontWeight="Black"/>
+            <Button Grid.Row="2" Grid.Column="0" Content="Ones" Name="P3OnesButton" Click="SelectionButton_Click"/>
+            <TextBox Grid.Row="2" Grid.Column="1" x:Name="P3Ones" Text="0" IsReadOnly="True" IsTabStop="False"  />
+            <Button Grid.Row="3" Grid.Column="0" Content="Twos" Name="P3TwosButton" Click="SelectionButton_Click" />
+            <TextBox  Grid.Row="3" Grid.Column="1" x:Name="P3Twos" Text="0" IsReadOnly="True" IsTabStop="False" />
+            <Button Grid.Row="4" Grid.Column="0" Content="Threes" Name="P3ThreesButton" Click="SelectionButton_Click" />
+            <TextBox  Grid.Row="4" Grid.Column="1" x:Name="P3Threes" Text="0" IsReadOnly="True"  IsTabStop="False" />
+            <Button Grid.Row="5" Grid.Column="0" Content="Fours" Name="P3FoursButton" Click="SelectionButton_Click" />
+            <TextBox  Grid.Row="5" Grid.Column="1" x:Name="P3Fours" Text="0" IsReadOnly="True"  IsTabStop="False" />
+            <Button Grid.Row="6" Grid.Column="0" Content="Fives" Name="P3FivesButton" Click="SelectionButton_Click" />
+            <TextBox  Grid.Row="6" Grid.Column="1" x:Name="P3Fives" Text="0" IsReadOnly="True"  IsTabStop="False" />
+            <Button Grid.Row="7" Grid.Column="0" Content="Sixes" Name="P3SixButton" Click="SelectionButton_Click" />
+            <TextBox  Grid.Row="7" Grid.Column="1" x:Name="P3Sixes" Text="0" IsReadOnly="True"  IsTabStop="False" />
+            <TextBlock Grid.Row="9" Grid.Column="0" Text="Upper Total" />
+            <TextBox Grid.Row="9" Grid.Column="1" Name="p3upperTotal" Text="0" IsReadOnly="True" IsTabStop="False" />
+            <TextBlock Grid.Row="8" Grid.Column="0" Text="Upper Bonus"/>
+            <TextBox Grid.Row="8" Grid.Column="1" Name="p3upperBonus" Text="0" IsReadOnly="True" IsTabStop="False" />
+            <TextBlock Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Text="Lower Section" FontSize="18" FontWeight="Black"/>
+            <Button Grid.Row="11" Grid.Column="0" Content="Three of a Kind" Name="P3ToakButton" Click="SelectionButton_Click" />
+            <TextBox Grid.Row="11" Grid.Column="1" Name="p3toak"  IsReadOnly="True" Text="0"  IsTabStop="False" />
+            <Button Grid.Row="12" Grid.Column="0" Content="Four of a Kind" Name="P3FoakButton" Click="SelectionButton_Click"/>
+            <TextBox Grid.Row="12" Grid.Column="1" Name="p3foak"  IsReadOnly="True" Text="0" IsTabStop="False" />
+            <Button Grid.Row="13" Grid.Column="0" Content="Full House" Name="P3FhButton" Click="SelectionButton_Click" />
+            <TextBox Grid.Row="13" Grid.Column="1" Name="p3fh"  IsReadOnly="True" Text="0" IsTabStop="False" />
+            <Button Grid.Row="14" Grid.Column="0" Content="Small Straight" Name="P3SsButton" Click="SelectionButton_Click" />
+            <TextBox Grid.Row="14" Grid.Column="1" Name="p3ss"  IsReadOnly="True" Text="0" IsTabStop="False" />
+            <Button Grid.Row="15" Grid.Column="0" Content="Large Straight" Name="P3LsButton" Click="SelectionButton_Click" />
+            <TextBox Grid.Row="15" Grid.Column="1" Name="p3ls"  IsReadOnly="True" Text="0" IsTabStop="False" />
+            <Button Grid.Row="16" Grid.Column="0" Content="Chance" Name="P3ChanceButton" Click="SelectionButton_Click" />
+            <TextBox Grid.Row="16" Grid.Column="1" Name="p3chance" Text="0" IsReadOnly="True" IsTabStop="False"  />
+            <Button Grid.Row="17" Grid.Column="0" Content="YachtSide" Name="P3YatButton" Click="SelectionButton_Click" />
+            <TextBox Grid.Row="17" Grid.Column="1" Name="p3yat"  IsReadOnly="True" Text="0" IsTabStop="False" />
+            <TextBlock Grid.Row="18" Grid.Column="0" Text="YachtSide Bonus" />
+            <TextBox Grid.Row="18" Grid.Column="1" Name="p3yb"  IsReadOnly="True" Text="0" IsTabStop="False" />
+            <TextBlock Grid.Row="19" Grid.Column="0" Text="Lower Total" />
+            <TextBox Grid.Row="19" Grid.Column="1" Name="p3lowerTotal" Text="0"  IsTabStop="False" />
+            <TextBlock Grid.Row="20" Grid.Column="0" Text="Total" FontWeight="Black" FontSize="18"/>
+            <TextBox Grid.Row="20" Grid.Column="1" Name="p3total" IsReadOnly="True" Text="0" IsTabStop="False" />
+        </Grid>
+
+        <!-- Player 4 -->
+        <Grid x:Name="P4Grid" Grid.Row="1" Grid.Column="5" Margin="10 0" IsEnabled="False" Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock x:Name="P4Name" Grid.Row="0" Grid.Column="0" Text="Player 4" FontSize="24" />
+            <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="Upper Section" FontSize="18" FontWeight="Black"/>
+            <Button Grid.Row="2" Grid.Column="0" Content="Ones" Name="P4OnesButton" Click="SelectionButton_Click"/>
+            <TextBox Grid.Row="2" Grid.Column="1" x:Name="P4Ones" Text="0" IsReadOnly="True" IsTabStop="False"  />
+            <Button Grid.Row="3" Grid.Column="0" Content="Twos" Name="P4TwosButton" Click="SelectionButton_Click" />
+            <TextBox  Grid.Row="3" Grid.Column="1" x:Name="P4Twos" Text="0" IsReadOnly="True" IsTabStop="False" />
+            <Button Grid.Row="4" Grid.Column="0" Content="Threes" Name="P4ThreesButton" Click="SelectionButton_Click" />
+            <TextBox  Grid.Row="4" Grid.Column="1" x:Name="P4Threes" Text="0" IsReadOnly="True"  IsTabStop="False" />
+            <Button Grid.Row="5" Grid.Column="0" Content="Fours" Name="P4FoursButton" Click="SelectionButton_Click" />
+            <TextBox  Grid.Row="5" Grid.Column="1" x:Name="P4Fours" Text="0" IsReadOnly="True"  IsTabStop="False" />
+            <Button Grid.Row="6" Grid.Column="0" Content="Fives" Name="P4FivesButton" Click="SelectionButton_Click" />
+            <TextBox  Grid.Row="6" Grid.Column="1" x:Name="P4Fives" Text="0" IsReadOnly="True"  IsTabStop="False" />
+            <Button Grid.Row="7" Grid.Column="0" Content="Sixes" Name="P4SixButton" Click="SelectionButton_Click" />
+            <TextBox  Grid.Row="7" Grid.Column="1" x:Name="P4Sixes" Text="0" IsReadOnly="True"  IsTabStop="False" />
+            <TextBlock Grid.Row="9" Grid.Column="0" Text="Upper Total" />
+            <TextBox Grid.Row="9" Grid.Column="1" Name="p4upperTotal" Text="0" IsReadOnly="True" IsTabStop="False" />
+            <TextBlock Grid.Row="8" Grid.Column="0" Text="Upper Bonus"/>
+            <TextBox Grid.Row="8" Grid.Column="1" Name="p4upperBonus" Text="0" IsReadOnly="True" IsTabStop="False" />
+            <TextBlock Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Text="Lower Section" FontSize="18" FontWeight="Black"/>
+            <Button Grid.Row="11" Grid.Column="0" Content="Three of a Kind" Name="P4ToakButton" Click="SelectionButton_Click" />
+            <TextBox Grid.Row="11" Grid.Column="1" Name="p4toak"  IsReadOnly="True" Text="0"  IsTabStop="False" />
+            <Button Grid.Row="12" Grid.Column="0" Content="Four of a Kind" Name="P4FoakButton" Click="SelectionButton_Click"/>
+            <TextBox Grid.Row="12" Grid.Column="1" Name="p4foak"  IsReadOnly="True" Text="0" IsTabStop="False" />
+            <Button Grid.Row="13" Grid.Column="0" Content="Full House" Name="P4FhButton" Click="SelectionButton_Click" />
+            <TextBox Grid.Row="13" Grid.Column="1" Name="p4fh"  IsReadOnly="True" Text="0" IsTabStop="False" />
+            <Button Grid.Row="14" Grid.Column="0" Content="Small Straight" Name="P4SsButton" Click="SelectionButton_Click" />
+            <TextBox Grid.Row="14" Grid.Column="1" Name="p4ss"  IsReadOnly="True" Text="0" IsTabStop="False" />
+            <Button Grid.Row="15" Grid.Column="0" Content="Large Straight" Name="P4LsButton" Click="SelectionButton_Click" />
+            <TextBox Grid.Row="15" Grid.Column="1" Name="p4ls"  IsReadOnly="True" Text="0" IsTabStop="False" />
+            <Button Grid.Row="16" Grid.Column="0" Content="Chance" Name="P4ChanceButton" Click="SelectionButton_Click" />
+            <TextBox Grid.Row="16" Grid.Column="1" Name="p4chance" Text="0" IsReadOnly="True" IsTabStop="False"  />
+            <Button Grid.Row="17" Grid.Column="0" Content="YachtSide" Name="P4YatButton" Click="SelectionButton_Click" />
+            <TextBox Grid.Row="17" Grid.Column="1" Name="p4yat"  IsReadOnly="True" Text="0" IsTabStop="False" />
+            <TextBlock Grid.Row="18" Grid.Column="0" Text="YachtSide Bonus" />
+            <TextBox Grid.Row="18" Grid.Column="1" Name="p4yb"  IsReadOnly="True" Text="0" IsTabStop="False" />
+            <TextBlock Grid.Row="19" Grid.Column="0" Text="Lower Total" />
+            <TextBox Grid.Row="19" Grid.Column="1" Name="p4lowerTotal" Text="0"  IsTabStop="False" />
+            <TextBlock Grid.Row="20" Grid.Column="0" Text="Total" FontWeight="Black" FontSize="18"/>
+            <TextBox Grid.Row="20" Grid.Column="1" Name="p4total" IsReadOnly="True" Text="0" IsTabStop="False" />
+        </Grid>
+
     </Grid>
 </UserControl>

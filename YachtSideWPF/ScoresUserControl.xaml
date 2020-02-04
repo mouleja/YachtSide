@@ -8,6 +8,29 @@
              d:DesignHeight="500" d:DesignWidth="700">
     <StackPanel>
         <TextBlock Text="High Scores" HorizontalAlignment="Center" FontSize="24" FontWeight="DemiBold"/>
+        <TextBlock Text="All time high scores:" FontSize="16"/>
+        <ListView x:Name="HighScores" ItemsSource="{Binding AllScores}" >
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Date}" Width="Auto" Header="Date" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Width="Auto" Header="Name" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Score}" Width="Auto" Header="Score" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StackPanel Orientation="Horizontal" Margin="0 5">
+            <TextBlock Text="Get scores for a particular player:" FontSize="14"/>
+            <ComboBox ItemsSource="{Binding Names}" Margin="10 0" Width="150"
+                      SelectionChanged="ComboBox_SelectionChanged"/>
+        </StackPanel>
+        <ListView Name="SelectedScoresListView" ItemsSource="{Binding SelectedScores}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Date}" Width="Auto" Header="Date" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Score}" Width="Auto" Header="Score" />
+                </GridView>
+            </ListView.View>
+        </ListView>
         <Button x:Name="CloseScoresButton" Content="Close" FontSize="18" FontWeight="Bold"
                 Width="300" Margin="10" Click="CloseScoresButton_Click"/>
     </StackPanel>

@@ -21,10 +21,8 @@ namespace YachtSideWPF
     /// </summary>
     public partial class SetupGame : UserControl
     {
-        string dirPath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), 
-            "YachtSide");
-        string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-            "YachtSide", "players.dat");
+        static string dirPath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "YachtSide");
+        string path = dirPath + "\\players.dat";
 
         ObservableCollection<string> _players;
         int _numberOfPlayers = 1;
@@ -49,7 +47,8 @@ namespace YachtSideWPF
             } 
         }
 
-        public int NumberOfPlayers {
+        public int NumberOfPlayers
+        {
             get 
             {
                 return _numberOfPlayers;
@@ -88,29 +87,26 @@ namespace YachtSideWPF
             {
                 AddPlayerError.Visibility = Visibility.Hidden;
                 _players.Add(newPlayer);
-                saveStringList(_players);
+                savePlayerList(_players);
                 NewPlayerTextBox.Text = "";
-                File.Create(dirPath + "\\Scores\\" + newPlayer + ".dat").Dispose();
             }
         }
 
-        private void saveStringList(ObservableCollection<string> list)
+        private void savePlayerList(ObservableCollection<string> players)
         {
             if (!(File.Exists(path)))
             {
                 Directory.CreateDirectory(dirPath);
-                Directory.CreateDirectory(dirPath + "\\Scores");
-                File.Create(dirPath + "\\Scores\\alltime.dat").Dispose();
-                File.Create(dirPath + "\\Scores\\yachtBot.dat").Dispose();
+                File.Create(dirPath + "\\scores.dat").Dispose();  // Create scores.dat file
                 File.Create(path).Dispose();    // Dispose gets rid of error on next line
             }
 
             using (TextWriter tw = new StreamWriter(path))
             {
 
-                foreach (string s in list)
+                foreach (string player in players)
                 {
-                    tw.WriteLine(s);
+                    tw.WriteLine(player);
                 }
             }
         }
@@ -175,7 +171,7 @@ namespace YachtSideWPF
 
         private void StartGameButton_Click(object sender, RoutedEventArgs e)
         {
-            _parent.CurrentControl = new GamePlay();
+            _parent.CurrentControl = new GamePlay(_currentPlayers);
         }
     }
 }
