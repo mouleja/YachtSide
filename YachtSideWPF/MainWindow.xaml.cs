@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,16 +19,25 @@ namespace YachtSideWPF
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         UserControl _currentUC;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            _currentUC = new SetupGame(this);
-            MainUserControlPanel.Content = _currentUC;
+            CurrentControl = new SetupGame(this);
+        }
+
+        protected void NotifyPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
         public UserControl CurrentControl
@@ -36,7 +46,8 @@ namespace YachtSideWPF
             set
             {
                 _currentUC = value;
-                MainUserControlPanel.Content = _currentUC;
+                //MainUserControlPanel.Content = _currentUC;
+                NotifyPropertyChanged("CurrentControl");
             }
         }
 

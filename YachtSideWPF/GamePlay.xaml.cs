@@ -4,8 +4,11 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -13,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace YachtSideWPF
 {
@@ -25,14 +29,15 @@ namespace YachtSideWPF
         int roll = 1, turn = 1, playerIndex = 0, numPlayers = 1;
         string _currentPlayer = "";
         List<string> _players;
+
         Button[] p1UpperButtons, p1LowerButtons, p2UpperButtons, p2LowerButtons, p3UpperButtons, p3LowerButtons, p4UpperButtons, p4LowerButtons;
         Button[][] upperButtons, lowerButtons;
-        TextBox[] p1scores, p2scores, p3scores, p4scores, die;
+        TextBox[] p1scores, p2scores, p3scores, p4scores;
         TextBox[][] scores;
         CheckBox[] boxes;
         SolidColorBrush green;
 
-        enum lb {Toak, Foak, Fh, Ss, Ls, Chance, Yat }  // Index of lower buttons in array
+        enum lb { Toak, Foak, Fh, Ss, Ls, Chance, Yat }  // Index of lower buttons in array
         enum sc {   // Index of scores in array
             Ones, Twos, Threes, Fours, Fives, Sixes, UpperTotal, UpperBonus,
             Toak, Foak, Fh, Ss, Ls, Chance, Yat, Yb, LowerTotal, Total
@@ -64,6 +69,7 @@ namespace YachtSideWPF
                 ++numPlayers;
             }
             _players = players;
+            Die1 = "X"; Die2 = "X"; Die3 = "X"; Die4 = "X"; Die5 = "X";
 
             p1UpperButtons = new Button[] { P1OnesButton, P1TwosButton, P1ThreesButton, P1FoursButton, P1FivesButton, P1SixButton };
             p1LowerButtons = new Button[] { P1ToakButton, P1FoakButton, P1FhButton, P1SsButton, P1LsButton, P1ChanceButton, P1YatButton };
@@ -75,7 +81,7 @@ namespace YachtSideWPF
             p4LowerButtons = new Button[] { P4ToakButton, P4FoakButton, P4FhButton, P4SsButton, P4LsButton, P4ChanceButton, P4YatButton };
             upperButtons = new Button[][] { p1UpperButtons, p2UpperButtons, p3UpperButtons, p4UpperButtons };
             lowerButtons = new Button[][] { p1LowerButtons, p2LowerButtons, p3LowerButtons, p4LowerButtons };
-            
+
             p1scores = new TextBox[] { P1Ones, P1Twos, P1Threes, P1Fours, P1Fives, P1Sixes, p1upperTotal, p1upperBonus,
                 p1toak, p1foak, p1fh, p1ss, p1ls, p1chance, p1yat, p1yb, p1lowerTotal, p1total };
             p2scores = new TextBox[] { P2Ones, P2Twos, P2Threes, P2Fours, P2Fives, P2Sixes, p2upperTotal, p2upperBonus,
@@ -87,13 +93,18 @@ namespace YachtSideWPF
             scores = new TextBox[][] { p1scores, p2scores, p3scores, p4scores };
 
             boxes = new CheckBox[] { keep1, keep2, keep3, keep4, keep5 };
-            die = new TextBox[] { die1, die2, die3, die4, die5 };
             green = new SolidColorBrush() { Color = Colors.LightGreen };
 
             GameOverTextBlock.Visibility = Visibility.Collapsed;
             PlayAgainButton.Visibility = Visibility.Collapsed;
             WinnerPanel.Visibility = Visibility.Collapsed;
+
+            if (CurrentPlayer == "yachtBot")
+            {
+                RollButton.Content = "Start yachtBot!";
+            }
             RollButton.Focus();
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -121,6 +132,38 @@ namespace YachtSideWPF
             }
         }
 
+        private string _die1, _die2, _die3, _die4, _die5;
+
+        public string Die1
+        {
+            get { return _die1; }
+            set { _die1 = value; NotifyPropertyChanged("Die1"); }
+        }
+
+        public string Die2
+        {
+            get { return _die2; }
+            set { _die2 = value; NotifyPropertyChanged("Die2"); }
+        }
+
+        public string Die3
+        {
+            get { return _die3; }
+            set { _die3 = value; NotifyPropertyChanged("Die3"); }
+        }
+
+        public string Die4
+        {
+            get { return _die4; }
+            set { _die4 = value; NotifyPropertyChanged("Die4"); }
+        }
+
+        public string Die5
+        {
+            get { return _die5; }
+            set { _die5 = value; NotifyPropertyChanged("Die5"); }
+        }
+
         private void RollButton_Click(object sender, RoutedEventArgs e)
         {
             Random r = new Random();
@@ -130,8 +173,19 @@ namespace YachtSideWPF
                 if (boxes[i].IsChecked == false)
                 {
                     currentDice[i] = r.Next(1, 7);
-                    die[i].Text = currentDice[i].ToString();
                 }
+            }
+            Die1 = currentDice[0].ToString();
+            Die2 = currentDice[1].ToString();
+            Die3 = currentDice[2].ToString();
+            Die4 = currentDice[3].ToString();
+            Die5 = currentDice[4].ToString();
+
+            if (CurrentPlayer == "yachtBot")
+            {
+                // http://www.jonathanantoine.com/2011/08/29/update-my-ui-now-how-to-wait-for-the-rendering-to-finish/
+                Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.ContextIdle, null);
+                Thread.Sleep(1000);
             }
 
             ++roll;
@@ -154,6 +208,11 @@ namespace YachtSideWPF
                 }
             }
             UpdateScores();
+
+            if (CurrentPlayer == "yachtBot")
+            {
+                yachtBotsTurn().RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+            }
         }
 
         // Reset game to initial state
@@ -179,6 +238,13 @@ namespace YachtSideWPF
             GameOverTextBlock.Visibility = Visibility.Collapsed;
             PlayAgainButton.Visibility = Visibility.Collapsed;
             WinnerPanel.Visibility = Visibility.Collapsed;
+
+            if (CurrentPlayer == "yachtBot")
+            {
+                RollButton.Content = "Start yachtBot!";
+            }
+            RollButton.Focus();
+
         }
 
         private void UpdateScores() // After each roll, updates the scores in each column not already used
@@ -259,7 +325,7 @@ namespace YachtSideWPF
             {
                 if (scores[playerIndex][(int)sc.Yat].Text == "50") // YachtSide Bonus
                 {
-                    scores[playerIndex][(int)sc.Yb].Text = 
+                    scores[playerIndex][(int)sc.Yb].Text =
                         (int.Parse(scores[playerIndex][(int)sc.Yb].Text) + 100).ToString();
                 }
 
@@ -333,10 +399,9 @@ namespace YachtSideWPF
             total += lowerTotal;
             scores[playerIndex][(int)sc.Total].Text = total.ToString();
 
-            PassTheDice();
-
-            ResetDie();
             RollButton.Focus();
+
+            PassTheDice();
 
             if (turn > 13)
             {
@@ -345,6 +410,10 @@ namespace YachtSideWPF
                 PlayAgainButton.Visibility = Visibility.Visible;
                 TurnCounter.Text = "";
                 CalcScores();
+            }
+            else if (CurrentPlayer == "yachtBot")
+            {
+                RollButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
             }
         }
 
@@ -388,7 +457,7 @@ namespace YachtSideWPF
                 P4Grid.IsEnabled = false;
             }
             if (playerIndex == 1)
-            { 
+            {
                 P1Grid.IsEnabled = false;
                 P2Grid.IsEnabled = true;
             }
@@ -403,15 +472,317 @@ namespace YachtSideWPF
                 P4Grid.IsEnabled = true;
             }
             CurrentPlayer = _players[playerIndex];
+            
+            if (CurrentPlayer == "yachtBot" && turn < 2)
+            {
+                RollButton.Content = "Start yachtBot!";
+            }
+            ResetDie();
+            RollButton.Focus();
+        }
+
+        private Button yachtBotsTurn()
+        {
+            // based on https://en.wikipedia.org/wiki/Yahtzee
+
+            int[] diceCount = GetDiceCount(); ;
+            (int mostDie, int highDie, int totalScore, bool fh, bool ss, bool ls) = getHand(diceCount);
+
+            foreach (CheckBox c in boxes)   // Reset checkboxes for dice to roll
+            {
+                c.IsChecked = false;
+            }
+
+            if (roll == 2)
+            {
+                // Exceptions before second roll
+                if (fh && highDie == 1) // full house with 3 1's
+                {
+                    return lowerButtons[playerIndex][(int)lb.Fh];
+                }
+                if (ss && diceCount[5] == 0 && diceCount[4] == 2)   // 12344
+                {
+                    keepThese(new int[] { 4 });
+                }
+                else if (ss && diceCount[2] == 0 && mostDie == 2)   // 3456 + pair
+                {
+                    keepThese(new int[] { highDie });
+                }
+                else if (mostDie == 2 && highDie == 1)  // don't keep pairs of 1s
+                {
+                    if (diceCount[3] == 1 && diceCount[4] == 1 && diceCount[5] == 1)
+                    {
+                        keepThese(new int[] { 3, 4, 5 });
+                    }
+                    else
+                    {
+                        foreach (int i in new int[] { 5, 4, 6 })
+                        {
+                            if (diceCount[i] == 1)
+                            {
+                                keepThese(new int[] { i });
+                            }
+                        }
+                    }
+                }
+                else    // Default actions
+                {
+                    if (ls)     // Keep large straights
+                    {
+                        return lowerButtons[playerIndex][(int)lb.Ls];
+                    }
+
+                    else if (ss || lsPossible(diceCount))
+                    {
+                        if (diceCount[5] == 0)
+                        {
+                            keepThese(new int[] { 1, 2, 3, 4 });
+                        }
+                        else if (diceCount[2] == 0)
+                        {
+                            keepThese(new int[] { 3, 4, 5, 6 });
+                        }
+                        else
+                        {
+                            keepThese(new int[] { 2, 3, 4, 5 });
+                        }
+
+                        if (mostDie == 2)   // uncheck duplicates in small straight
+                        {
+                            uncheckOne(highDie);
+                        }
+                    }
+                    else
+                    {
+                        keepThese(new int[] { highDie });   // Default keep larget number of die, highest if tie
+                    }
+                }
+                return RollButton;
+            }
+            // Second roll
+            if (roll == 3)
+            {
+                // Exceptions before third role
+                if (fh && highDie < 4)  // Keep full houses w/ 3 3s or lower
+                {
+                    return lowerButtons[playerIndex][(int)lb.Fh];
+                }
+                if (mostDie == 2 && diceCount[1] == 2 && highDie < 4)   // 1122x or 1133x or 11xxx
+                {
+                    if (diceCount[3] == 1 && diceCount[4] == 1 && diceCount[5] == 1)
+                    {
+                        keepThese(new int[] { 3, 4, 5 });
+                    }
+                    else
+                    {
+                        keepThese(new int[] { 1, highDie });
+                    }
+                }
+                else if (mostDie == 1 && diceCount[3] == 0) // 12456
+                {
+                    keepThese(new int[] { 4, 5, 6 });
+                }
+                else    // Default actions (same as above)
+                {
+                    if (ls)     // Keep large straights
+                    {
+                        return lowerButtons[playerIndex][(int)lb.Ls];
+                    }
+
+                    else if (ss || lsPossible(diceCount))
+                    {
+                        if (diceCount[5] == 0)
+                        {
+                            keepThese(new int[] { 1, 2, 3, 4 });
+                        }
+                        else if (diceCount[2] == 0)
+                        {
+                            keepThese(new int[] { 3, 4, 5, 6 });
+                        }
+                        else
+                        {
+                            keepThese(new int[] { 2, 3, 4, 5 });
+                        }
+
+                        if (mostDie == 2)   // uncheck duplicates in small straight
+                        {
+                            uncheckOne(highDie);
+                        }
+                    }
+                    else
+                    {
+                        keepThese(new int[] { highDie });   // Default keep largest number of die, highest if tie
+                    }
+                }
+                return RollButton;
+            }
+            if (roll == 4)  // Rolls done need to select category
+            {
+                if (lowerButtons[playerIndex][(int)lb.Yat].IsEnabled && mostDie == 5)
+                {
+                    return lowerButtons[playerIndex][(int)lb.Yat];
+                }
+                // YachtSides after Yatchside category filled must be played in upper section if available
+                if (mostDie > 3 && upperButtons[playerIndex][highDie - 1].IsEnabled)
+                {
+                    return upperButtons[playerIndex][highDie - 1];
+                }
+                if (ls)
+                {
+                    return lowerButtons[playerIndex][(int)lb.Ls];
+                }
+                if (fh)
+                {
+                    return lowerButtons[playerIndex][(int)lb.Fh];
+                }
+                if (ss)
+                {
+                    return lowerButtons[playerIndex][(int)lb.Ss];
+                }
+                if (mostDie == 4 && lowerButtons[playerIndex][(int)lb.Foak].IsEnabled)
+                {
+                    return lowerButtons[playerIndex][(int)lb.Foak];
+                }
+                if (mostDie == 3)
+                {
+                    if (lowerButtons[playerIndex][(int)lb.Toak].IsEnabled && 
+                        (totalScore > 24 || !upperButtons[playerIndex][highDie - 1].IsEnabled) )
+                    {
+                        return lowerButtons[playerIndex][(int)lb.Toak];
+                    }
+                    else if (upperButtons[playerIndex][highDie - 1].IsEnabled)
+                    {
+                        return upperButtons[playerIndex][highDie - 1];
+                    }
+                }
+                if (mostDie == 2)
+                {
+                    if (highDie < 4 || diceCount[1] == 2 || diceCount[2] == 2 || diceCount[3] == 2)
+                    {
+                        int lowPair = Array.IndexOf(new int[] { diceCount[1], diceCount[2], diceCount[3] }, 2);
+                        if (totalScore > 21 && lowerButtons[playerIndex][(int)lb.Chance].IsEnabled)
+                        {
+                            return lowerButtons[playerIndex][(int)lb.Chance];
+                        }
+                        else if (upperButtons[playerIndex][lowPair].IsEnabled)  // use lowest pair available
+                        {
+                            return upperButtons[playerIndex][lowPair];
+                        }
+                        else if(upperButtons[playerIndex][highDie - 1].IsEnabled)
+                        {
+                            return upperButtons[playerIndex][highDie - 1];
+                        }
+                    }
+                    else
+                    {
+                        if (totalScore >= 19 && lowerButtons[playerIndex][(int)lb.Chance].IsEnabled)
+                        {
+                            return lowerButtons[playerIndex][(int)lb.Chance];
+                        }
+                        else if (upperButtons[playerIndex][0].IsEnabled)
+                        {
+                            return upperButtons[playerIndex][0];
+                        }
+                    }
+                }
+                Button[] desparation = new Button[] {
+                    upperButtons[playerIndex][0],
+                    lowerButtons[playerIndex][(int)lb.Chance],
+                    upperButtons[playerIndex][1],
+                    upperButtons[playerIndex][2],
+                    lowerButtons[playerIndex][(int)lb.Yat],
+                    lowerButtons[playerIndex][(int)lb.Ls],
+                    lowerButtons[playerIndex][(int)lb.Fh],
+                    lowerButtons[playerIndex][(int)lb.Foak],
+                    upperButtons[playerIndex][3],
+                    upperButtons[playerIndex][4],
+                    upperButtons[playerIndex][5],
+                    lowerButtons[playerIndex][(int)lb.Ss],
+                    lowerButtons[playerIndex][(int)lb.Toak],
+                };
+                foreach (Button b in desparation)
+                {
+                    if (b.IsEnabled)
+                    {
+                        return b;
+                    }
+                }
+                throw new Exception("You failed to select any buttons!!!");
+            }
+            else 
+            {
+                throw new Exception($"roll is a bad number: {roll}");
+            }
+        }
+
+        private bool lsPossible(int[] diceCount)    // ss used but have 2 chances at ls still
+        {
+            if ((lowerButtons[playerIndex][(int)lb.Ls].IsEnabled) && 
+                (diceCount[2] > 0 && diceCount[3] > 0 && diceCount[4] > 0 && diceCount[5] > 0))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private void uncheckOne(int die)
+        {
+            for (int i = 0; i < 6; ++i)
+            {
+                if (currentDice[i] == die)
+                {
+                    boxes[i].IsChecked = false;
+                    return;
+                }
+            }
+        }
+
+        (int, int, int, bool, bool, bool) getHand(int[] diceCount)
+        {
+            int max = diceCount.Max();
+            int high = 0;
+            int total = 0;
+
+            for (int i = 1; i < 7; ++i)
+            {
+                total += i * diceCount[i];
+                if (diceCount[i] == max) high = i;
+            }
+            bool fh = (scores[playerIndex][(int)sc.Fh].Text == "25") && lowerButtons[playerIndex][(int)lb.Fh].IsEnabled;
+            bool ss = (scores[playerIndex][(int)sc.Ss].Text == "30") && lowerButtons[playerIndex][(int)lb.Ss].IsEnabled;
+            bool ls = (scores[playerIndex][(int)sc.Ls].Text == "40") && lowerButtons[playerIndex][(int)lb.Ls].IsEnabled;
+            return (max, high, total, fh, ss, ls);
+        }
+
+        void keepThese(int[] keeper)
+        {
+            for (int i = 0; i < 5; ++ i)
+            {
+                if (keeper.Contains(currentDice[i]))
+                {
+                    boxes[i].IsChecked = true;
+                }
+                else
+                {
+                    boxes[i].IsChecked = false;
+                }
+            }
+        }
+
+        private int[] GetDiceCount()
+        {
+            int[] result = { 0, 0, 0, 0, 0, 0, 0 }; // index 0 = filler for readability
+            for (int i = 0; i < 5; ++i)
+            {
+                result[currentDice[i]]++;   // increment the count at the index that die reads
+            }
+            return result;
         }
 
         private void ResetDie()
         {
-            roll = 1;
-            foreach (TextBox d in die)
-            {
-                d.Text = "X";
-            }
+            roll = 1; 
+
             foreach (CheckBox b in boxes)
             {
                 b.IsChecked = false;

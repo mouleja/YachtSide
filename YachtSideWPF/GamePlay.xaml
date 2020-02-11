@@ -45,11 +45,11 @@
             </StackPanel>
             <TextBlock Text="Dice:" Grid.Row="1" FontWeight="Black" FontSize="24" />
             <StackPanel Grid.Row="2" Orientation="Horizontal" >
-                <TextBox Name="die1" Margin="5" Text="X" FontSize="36" VerticalAlignment="Center" IsReadOnly="True" IsTabStop="False"/>
-                <TextBox Name="die2" Margin="5" Text="X" FontSize="36" VerticalAlignment="Center" IsReadOnly="True" IsTabStop="False"/>
-                <TextBox Name="die3" Margin="5" Text="X" FontSize="36" VerticalAlignment="Center" IsReadOnly="True" IsTabStop="False"/>
-                <TextBox Name="die4" Margin="5" Text="X" FontSize="36" VerticalAlignment="Center" IsReadOnly="True" IsTabStop="False"/>
-                <TextBox Name="die5" Margin="5" Text="X" FontSize="36" VerticalAlignment="Center" IsReadOnly="True" IsTabStop="False" />
+                <TextBox Name="die1" Margin="5" Text="{Binding Die1}" FontSize="36" VerticalAlignment="Center" IsReadOnly="True" IsTabStop="False"/>
+                <TextBox Name="die2" Margin="5" Text="{Binding Die2}" FontSize="36" VerticalAlignment="Center" IsReadOnly="True" IsTabStop="False"/>
+                <TextBox Name="die3" Margin="5" Text="{Binding Die3}" FontSize="36" VerticalAlignment="Center" IsReadOnly="True" IsTabStop="False"/>
+                <TextBox Name="die4" Margin="5" Text="{Binding Die4}" FontSize="36" VerticalAlignment="Center" IsReadOnly="True" IsTabStop="False"/>
+                <TextBox Name="die5" Margin="5" Text="{Binding Die5}" FontSize="36" VerticalAlignment="Center" IsReadOnly="True" IsTabStop="False" />
             </StackPanel>
             <TextBlock Grid.Row="3" Text="Keep ?" FontSize="18"/>
             <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,0" >

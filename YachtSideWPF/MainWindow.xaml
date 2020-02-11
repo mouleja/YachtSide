@@ -5,11 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YachtSideWPF"
         mc:Ignorable="d"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Title="YachtSide" Height="660" Width="880">
 
-    <Window.Resources>
-
-    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -30,7 +28,7 @@
         </Menu>
         
         <TextBlock Text="YachtSide" Grid.Row="1" HorizontalAlignment="Center" FontFamily="Arial" FontSize="48"/>
-        <UserControl Grid.Row="2" Name="MainUserControlPanel" Margin="10"/>
+        <UserControl Grid.Row="2" Name="MainUserControlPanel" Content="{Binding CurrentControl}" Margin="10" />
         
         <!-- Rules PopUp -->
         <StackPanel x:Name="RulesPopup" Orientation="Vertical" Grid.Row="2" Visibility="Hidden">
