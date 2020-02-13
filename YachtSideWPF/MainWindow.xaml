@@ -25,6 +25,7 @@
             <MenuItem Name="NewGameMenuItem" Header="_New Game" Click="NewGameMenuItem_Click" />
             <MenuItem Name="ScoresMenuItem" Header="_Scores" Click="ScoresMenuItem_Click" />
             <MenuItem Name="RulesMenuItem" Header="_Rules" Click="RulesMenuItem_Click" />
+            <MenuItem Name="AboutMenuItem" Header="_About" Click="AboutMenuItem_Click" />
         </Menu>
         
         <TextBlock Text="YachtSide" Grid.Row="1" HorizontalAlignment="Center" FontFamily="Arial" FontSize="48"/>
@@ -50,6 +51,20 @@
         </Rectangle>
         <TextBlock Grid.Row="4" Text="Ad goes here?" HorizontalAlignment="Center" FontFamily="Arial" 
                    FontSize="48" Padding="10"/>
-
+        <Popup x:Name="AboutPopup" IsOpen="True" Placement="Center" >
+            <Border BorderThickness="4" CornerRadius="2" Background="White" BorderBrush="Black">
+            <StackPanel Background="White" >
+                <TextBlock Padding="10 10 10 5" >
+                    YachtSide v0.1 Copyright 2020 </TextBlock>
+                <TextBlock Padding="10 5 10 10" >
+                    <Hyperlink NavigateUri="https://majule.github.io/" 
+                               RequestNavigate="Hyperlink_RequestNavigate" >
+                        Majule Games
+                    </Hyperlink>
+                </TextBlock>
+                <Button x:Name="CloseAboutButton" Content="Close" Click="CloseAboutButton_Click"/>
+                </StackPanel>
+            </Border>
+        </Popup>
     </Grid>
 </Window>

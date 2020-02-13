@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -72,6 +73,23 @@ namespace YachtSideWPF
         {
             RulesPopup.Visibility = Visibility.Hidden;
             MainUserControlPanel.Visibility = Visibility.Visible;
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
+            e.Handled = true;
+        }
+
+        private void AboutMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (AboutPopup.IsOpen) AboutPopup.IsOpen = false;
+            else AboutPopup.IsOpen = true;
+        }
+
+        private void CloseAboutButton_Click(object sender, RoutedEventArgs e)
+        {
+            AboutPopup.IsOpen = false;
         }
     }
 }
