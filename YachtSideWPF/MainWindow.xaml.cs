@@ -30,6 +30,8 @@ namespace YachtSideWPF
         {
             InitializeComponent();
 
+            RulesPopup.Visibility = Visibility.Collapsed;
+            AboutPopup.IsOpen = false;
             CurrentControl = new SetupGame(this);
         }
 
@@ -65,13 +67,21 @@ namespace YachtSideWPF
 
         private void RulesMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            MainUserControlPanel.Visibility = Visibility.Collapsed;
-            RulesPopup.Visibility = Visibility.Visible;
+            if (RulesPopup.Visibility == Visibility.Visible)
+            {
+                MainUserControlPanel.Visibility = Visibility.Visible;
+                RulesPopup.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                MainUserControlPanel.Visibility = Visibility.Collapsed;
+                RulesPopup.Visibility = Visibility.Visible;
+            }
         }
 
         private void CloseRulesButton_Click(object sender, RoutedEventArgs e)
         {
-            RulesPopup.Visibility = Visibility.Hidden;
+            RulesPopup.Visibility = Visibility.Collapsed;
             MainUserControlPanel.Visibility = Visibility.Visible;
         }
 

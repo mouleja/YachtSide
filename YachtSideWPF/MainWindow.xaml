@@ -32,25 +32,37 @@
         <UserControl Grid.Row="2" Name="MainUserControlPanel" Content="{Binding CurrentControl}" Margin="10" />
         
         <!-- Rules PopUp -->
-        <StackPanel x:Name="RulesPopup" Orientation="Vertical" Grid.Row="2" Visibility="Hidden">
+        <StackPanel x:Name="RulesPopup" Orientation="Vertical" Grid.Row="2">
             <TextBlock FontSize="24" HorizontalAlignment="Center" FontWeight="Bold"
                 Text="Rules" />
-            <Button x:Name="CloseRulesButton" Content="Close" Width="200" Margin="10"
+            <TextBlock Padding="20 10" LineHeight="18" HorizontalAlignment="Center">
+                YachtSide is a dice game where 1 to 4 players compete to get the high score.<LineBreak />
+                Each player gets 13 turns.<LineBreak />
+                A turn consists of 3 rolls of 5 six-sided dice.<LineBreak />
+                The first roll must be of all 5 dice, in the second and third rolls the player may 'keep' 0 - 5
+                dice and not re-roll them.<LineBreak />
+                At the end of the turn, the player must select one of the thirteen scoring categories.<LineBreak />
+                Each category must be used exactly one time.<LineBreak />
+                After each roll, the scores are recalculated for the unused categories.<LineBreak />
+                The upper section scores are simply the number (1-6) times the number of die of that number.<LineBreak />
+                There is a 35 point bonus for scoring 63 points in the upper section (exactly 3 of each number = 63 points)<LineBreak />
+                For the lower section, points are scored for completing specific 'hands'.<LineBreak />
+                - Three of a kind: 3 of the same die - scores total value (sum of all die numbers).<LineBreak />
+                - Four of a kind: 4 of the same die - scores total value.<LineBreak />
+                - Full House: 3 of the same die and 2 of a different die - scores 25.<LineBreak />
+                - Small Straight: 4 sequential die numbers (1234x, 2345x, or 3456x) - scores 30.<LineBreak />
+                - Large Straight: 5 sequential die numbers (12345 or 23456) - scores 40.<LineBreak />
+                - YachtSide: 5 of the same die - scores 50.<LineBreak />
+                - Chance: any combination of die - score total value.<LineBreak />
+                YachtSide bonus: If you have already scored 50 for YachtSide, further 5-of-a-kind rolls score 100 point bonus!<LineBreak />
+                Additionally, if a YachtSide is rolled and the YachtSide category has used <Run FontStyle="Italic">and</Run> the upper section for that number has been used,<LineBreak/>
+                 the YachtSide acts as a 'joker' and any unplayed Small Stright, Large Straight, or Full House may be played.<LineBreak />
+                After all players have completed their 13th round, the scores, including all bonuses, are tallied and the winner declared.<LineBreak />
+            </TextBlock>
+            <Button x:Name="CloseRulesButton" Content="Close" Width="200" Margin="0"
                     Click="CloseRulesButton_Click" />
         </StackPanel>
         
-        <!-- Footer -->
-        <Rectangle Grid.Row="4" StrokeThickness="10" >
-            <Rectangle.Stroke>
-                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5" MappingMode="RelativeToBoundingBox" SpreadMethod="Pad">
-                    <GradientStop Color="DarkRed" Offset="0"/>
-                    <GradientStop Color="Goldenrod" Offset="0.5"/>
-                    <GradientStop Color="DarkRed" Offset="1" />
-                </LinearGradientBrush>
-            </Rectangle.Stroke>
-        </Rectangle>
-        <TextBlock Grid.Row="4" Text="Ad goes here?" HorizontalAlignment="Center" FontFamily="Arial" 
-                   FontSize="48" Padding="10"/>
         <Popup x:Name="AboutPopup" IsOpen="True" Placement="Center" >
             <Border BorderThickness="4" CornerRadius="2" Background="White" BorderBrush="Black">
             <StackPanel Background="White" >
