@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YachtSide", "YachtSide\YachtSide.csproj", "{798BCAE0-924A-42C2-A291-AAF69E335A4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YachtSideWPF", "YachtSideWPF\YachtSideWPF.csproj", "{34B33AFE-F970-45B9-B1E7-CE4D21AFECE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YachtSideWPF", "YachtSideWPF\YachtSideWPF.csproj", "{34B33AFE-F970-45B9-B1E7-CE4D21AFECE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YachtSideWeb", "YachtSideWeb\YachtSideWeb.csproj", "{7A87116D-902F-4E8F-B8FE-977F4FA0CBAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,6 +69,26 @@ Global
 		{34B33AFE-F970-45B9-B1E7-CE4D21AFECE6}.Release|x64.Build.0 = Release|Any CPU
 		{34B33AFE-F970-45B9-B1E7-CE4D21AFECE6}.Release|x86.ActiveCfg = Release|Any CPU
 		{34B33AFE-F970-45B9-B1E7-CE4D21AFECE6}.Release|x86.Build.0 = Release|Any CPU
+		{7A87116D-902F-4E8F-B8FE-977F4FA0CBAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A87116D-902F-4E8F-B8FE-977F4FA0CBAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A87116D-902F-4E8F-B8FE-977F4FA0CBAA}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{7A87116D-902F-4E8F-B8FE-977F4FA0CBAA}.Debug|ARM.Build.0 = Debug|Any CPU
+		{7A87116D-902F-4E8F-B8FE-977F4FA0CBAA}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{7A87116D-902F-4E8F-B8FE-977F4FA0CBAA}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{7A87116D-902F-4E8F-B8FE-977F4FA0CBAA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7A87116D-902F-4E8F-B8FE-977F4FA0CBAA}.Debug|x64.Build.0 = Debug|Any CPU
+		{7A87116D-902F-4E8F-B8FE-977F4FA0CBAA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7A87116D-902F-4E8F-B8FE-977F4FA0CBAA}.Debug|x86.Build.0 = Debug|Any CPU
+		{7A87116D-902F-4E8F-B8FE-977F4FA0CBAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A87116D-902F-4E8F-B8FE-977F4FA0CBAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A87116D-902F-4E8F-B8FE-977F4FA0CBAA}.Release|ARM.ActiveCfg = Release|Any CPU
+		{7A87116D-902F-4E8F-B8FE-977F4FA0CBAA}.Release|ARM.Build.0 = Release|Any CPU
+		{7A87116D-902F-4E8F-B8FE-977F4FA0CBAA}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{7A87116D-902F-4E8F-B8FE-977F4FA0CBAA}.Release|ARM64.Build.0 = Release|Any CPU
+		{7A87116D-902F-4E8F-B8FE-977F4FA0CBAA}.Release|x64.ActiveCfg = Release|Any CPU
+		{7A87116D-902F-4E8F-B8FE-977F4FA0CBAA}.Release|x64.Build.0 = Release|Any CPU
+		{7A87116D-902F-4E8F-B8FE-977F4FA0CBAA}.Release|x86.ActiveCfg = Release|Any CPU
+		{7A87116D-902F-4E8F-B8FE-977F4FA0CBAA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
