@@ -1,7 +1,7 @@
 # YachtSide
 A Yahtzee-style dice game in C#/.NET Core/WPF
 
-<img src="YachtSide1.png" alt="YachtSide>
+<img src="YachtSide1.png" alt="YachtSide" width="600" height="450">
 
 ## Features
 - 1 to 4 players
